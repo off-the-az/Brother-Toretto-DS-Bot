@@ -1,4 +1,6 @@
 import { REST, Routes, Client, GatewayIntentBits, Role } from 'discord.js';
+import * as dotenv from "dotenv";
+dotenv.config({ path: __dirname+'/.env' });
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 const commands = [
@@ -8,12 +10,12 @@ const commands = [
   },
 ];
 
-const rest = new REST({ version: '10' }).setToken('MTE0MzY2NzYxMjQxMzMzNzY4Mw.GIxDOy.sj3kqbtpfOuEPknOHCuWTCEpe_ZV6S-Q6nWzRg');
+const rest = new REST({ version: '10' }).setToken(process.env.CLIENT_TOKEN as string);
 
 try {
   console.log('Started refreshing application (/) commands.');
 
-  rest.put(Routes.applicationCommands('1143667612413337683'), { body: commands });
+  rest.put(Routes.applicationCommands(process.env.CLIENT_TOKEN as string), { body: commands });
 
   console.log('Successfully reloaded application (/) commands.');
 } catch (error) {
@@ -30,4 +32,4 @@ client.on('interactionCreate', async interaction => {
   }
 });
 
-client.login('MTE0MzY2NzYxMjQxMzMzNzY4Mw.GIxDOy.sj3kqbtpfOuEPknOHCuWTCEpe_ZV6S-Q6nWzRg');
+client.login(process.env.CLIENT_TOKEN as string);
